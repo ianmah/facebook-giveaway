@@ -3,6 +3,10 @@ import json
 import facebook
 import configparser
 from random import randint
+import time
+
+
+print('Gathering all entries...')
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -11,7 +15,7 @@ token = config['DEFAULT']['TOKEN']
 
 graph = facebook.GraphAPI(access_token=token, version = 3.2)
 
-rawdata = [
+testdata = [
     {
       "from": {
         "name": "Ben Hwang",
@@ -94,10 +98,11 @@ rawdata = [
     }
   ]
 
-data = graph.request('/2127041077326892/comments?fields=from,message_tags&limit=1000')['data']
-# data = rawdata
+data = graph.request('/2127041077326892/comments?fields=from,message_tags&limit=2500')['data']
+# data = testdata
 
 my_list = []
+
 
 class Person:
 
@@ -116,12 +121,16 @@ class Person:
     def add_tag(self, tag):
         self.__tags.append(tag)
 
-
 for i in range(len(data)):
+
     name = data[i]['from']['name']
     if 'message_tags' not in data[i]:
-        print(name, ' didnt tag anyone')
+        None
+        # print(name, ' didnt tag anyone')
+    elif data[i]['message_tags'][0]['type'] == 'page':
+        None
     else:
+
         tag = data[i]['message_tags'][0]['name']
 
         n = Person(name)
@@ -132,13 +141,15 @@ for i in range(len(data)):
             currentUsers.append(p.get_name())
         if name not in currentUsers:
             my_list.append(n)
-            print('added ', name)
+            print(n.get_name())
         else:
             for p in my_list:
                 if p.get_name() == name:
                     if tag not in p.get_tags():
-                        n.add_tag(tag)
-                        my_list.append(n)
+                            n.add_tag(tag)
+                            my_list.append(n)
+                            print(n.get_name())
+
 
 unchecked = []
 for i in range(len(data)):
@@ -150,12 +161,20 @@ currentUsers = []
 for p in my_list:
     currentUsers.append(p.get_name())
 
-print(currentUsers)
-print('Total comments:', len(unchecked))
-print('Total valid entries:', len(my_list))
-
+print('Total entries:', len(my_list))
+time.sleep(1)
 
 x = randint(0, len(my_list)-1)
 print('Winner number:', x)
+time.sleep(1)
 
-print('Person in number', x, 'is', my_list[x].get_name(), '!')
+print('Person in number', x, 'is')
+print('.')
+time.sleep(1)
+print('.')
+time.sleep(1)
+print('.')
+time.sleep(1)
+print(my_list[x].get_name(), '!')
+time.sleep(1)
+print('ʕノ•ᴥ•ʔノ CONGRATS!!! ~(˘▾˘~)')
