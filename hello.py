@@ -2,8 +2,9 @@ import requests
 import json
 import facebook
 import configparser
-from random import randint
+from random import shuffle, randint
 import time
+import pyfiglet
 
 print('Gathering all entries...')
 
@@ -142,7 +143,7 @@ for i in range(len(data)):
             currentUsers.append(p.get_name())
         if name not in currentUsers:
             my_list.append(n)
-            print(n.get_name())
+            # print(n.get_name())
         else:
             for p in my_list:
                 if p.get_name() == name:
@@ -162,20 +163,81 @@ currentUsers = []
 for p in my_list:
     currentUsers.append(p.get_name())
 
-print('Total entries:', len(my_list))
+# x = randint(0, len(my_list)-1)
+# print('Winner number:', x)
+# time.sleep(1)
+
+# print('Person in number', x, 'is')
+# print('.')
+# time.sleep(1)
+# print('.')
+# time.sleep(1)
+# print('.')
+# time.sleep(1)
+# print(my_list[x].get_name(), '!')
+# time.sleep(1)
+# print('ʕノ•ᴥ•ʔノ CONGRATS!!! ~(˘▾˘~)')
+
+shuffle(currentUsers)
+
+def stall():
+    print("Gathering Entries")
+    time.sleep(1)
+    print("Gathering Entries.")
+    time.sleep(1)
+    print("Gathering Entries..")
+    time.sleep(1)
+    print("Gathering Entries...")
+    time.sleep(1)
+    print("Gathering Valid Entries....")
+
+# stall()
+
+for entry in currentUsers:
+    print(entry)
+    # time.sleep(.0025)
+
+length = len(currentUsers)
+
+print("Total top-level comments:", len(data))
+print("Total valid entries:", length)
 time.sleep(1)
 
-x = randint(0, len(my_list)-1)
-print('Winner number:', x)
-time.sleep(1)
+def confirm_choice():
+    while True:
+        confirm = input('Would you like to redraw? [y]Yes or [n]No: ')
+        if confirm in ('y', 'n'):
+            if confirm is 'y':
+                picker()
+                return confirm
+            else:
+                print("\nCONGRATS.")
+                return confirm
+        else:
+            print("\n[y]Yes or [n]No: ")
 
-print('Person in number', x, 'is')
-print('.')
-time.sleep(1)
-print('.')
-time.sleep(1)
-print('.')
-time.sleep(1)
-print(my_list[x].get_name(), '!')
-time.sleep(1)
-print('ʕノ•ᴥ•ʔノ CONGRATS!!! ~(˘▾˘~)')
+def picker():
+    print("Generating a random number from 1 to", length)
+    time.sleep(1)
+
+    x = 0
+    for z in range(200):
+        x = randint(1, length)
+        print(x, "    ",  end="\r")
+        time.sleep(.015)
+
+    time.sleep(2)
+    print(x)
+
+    strin = " Person in position " + str(x)
+    for z in range(5):
+        print(strin,  end="\r")
+        strin += "."
+        time.sleep(1)
+
+    print("Person in position", x)
+    ascii_banner = pyfiglet.figlet_format(currentUsers[x])
+    print(ascii_banner)
+    confirm_choice()
+
+picker()
