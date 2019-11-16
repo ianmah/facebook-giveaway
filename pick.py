@@ -98,13 +98,12 @@ exampeData = [
     }
   ]
 # Smart TV Giveaway
-data = graph.request('/2753661784664815/comments?fields=from,message_tags&limit=2500')['data']
+# data = graph.request('/2753661784664815/comments?fields=from,message_tags&limit=2500')['data']
 # Airpods Giveaway
-# data = graph.request('/2753090481388612/comments?fields=from,message_tags&limit=2500')['data']
+data = graph.request('/2753090481388612/comments?fields=from,message_tags&limit=2500')['data']
 # data = exampeData
 
 my_list = []
-
 
 class Person:
 
@@ -124,7 +123,6 @@ class Person:
         self.__tags.append(tag)
 
 for i in range(len(data)):
-
     name = data[i]['from']['name']
     if 'message_tags' not in data[i]:
         None
@@ -163,21 +161,6 @@ currentUsers = []
 for p in my_list:
     currentUsers.append(p.get_name())
 
-# x = randint(0, len(my_list)-1)
-# print('Winner number:', x)
-# time.sleep(1)
-
-# print('Person in number', x, 'is')
-# print('.')
-# time.sleep(1)
-# print('.')
-# time.sleep(1)
-# print('.')
-# time.sleep(1)
-# print(my_list[x].get_name(), '!')
-# time.sleep(1)
-# print('ʕノ•ᴥ•ʔノ CONGRATS!!! ~(˘▾˘~)')
-
 shuffle(currentUsers)
 
 def stall():
@@ -195,12 +178,24 @@ def stall():
 
 for entry in currentUsers:
     print(entry)
-    # time.sleep(.0025)
+    time.sleep(.0025)
 
-length = len(currentUsers)
+f = open("going.txt", "r", encoding="utf8")
+text = f.read()
+fbGoingList = text.splitlines()
 
-print("Total top-level comments:", len(data))
-print("Total valid entries:", length)
+
+f = open("going.txt", "r", encoding="utf8")
+text = f.read()
+attendeeList = text.splitlines()
+
+allEntries = fbGoingList+currentUsers+attendeeList+attendeeList+attendeeList
+
+length = len(allEntries)
+
+print("Total VALID comments:", len(data))
+print("Total Going on Facebook:", len(fbGoingList))
+print("Total entries:", length)
 time.sleep(1)
 
 def confirm_choice():
@@ -236,7 +231,7 @@ def picker():
         time.sleep(1)
 
     print("Person in position", x)
-    ascii_banner = pyfiglet.figlet_format(currentUsers[x])
+    ascii_banner = pyfiglet.figlet_format(allEntries[x])
     print(ascii_banner)
     confirm_choice()
 
